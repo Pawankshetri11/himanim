@@ -30,10 +30,14 @@ export function SequentialQuestionPage({
   const [isWaiting, setIsWaiting] = useState(false);
   const [waitingForQuestion, setWaitingForQuestion] = useState<string | null>(null);
 
-  // Initialize first question as answerable
+  // Initialize first question as answerable, rest as locked
   useEffect(() => {
     if (questions.length > 0) {
-      setCanAnswer({ [questions[0].id]: true });
+      const initialCanAnswer: {[key: string]: boolean} = {};
+      questions.forEach((question, index) => {
+        initialCanAnswer[question.id] = index === 0; // Only first question is answerable
+      });
+      setCanAnswer(initialCanAnswer);
     }
   }, [questions]);
 
