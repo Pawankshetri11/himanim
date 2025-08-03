@@ -4,7 +4,7 @@ import { useQuiz } from '@/contexts/QuizContext';
 import { GameRenderer } from '@/components/GameRenderer';
 import { QuizProgress } from '@/components/QuizProgress';
 import { AdblockDetector } from '@/components/AdblockDetector';
-import { SequentialQuestionPage } from '@/components/SequentialQuestionPage';
+import { SequentialGamePage } from '@/components/SequentialGamePage';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
@@ -181,55 +181,14 @@ export default function Quiz() {
             </div>
           </div>
 
-          {/* Sequential Questions or Regular Games */}
-          {(() => {
-            // Check if all tasks are quiz type for sequential display
-            const allQuizTasks = pageTasks.every(task => task.type === 'quiz');
-            
-            if (allQuizTasks) {
-              // Convert tasks to questions format
-              const questions = pageTasks.map(task => ({
-                id: task.id,
-                question: task.data.question,
-                description: task.description,
-                options: task.data.options,
-                correctAnswer: task.data.correctAnswer
-              }));
-              
-              return (
-                <div className="max-w-4xl mx-auto">
-                  <SequentialQuestionPage 
-                    questions={questions}
-                    onComplete={handleSequentialComplete}
-                    disabled={allTasksCompleted}
-                  />
-                </div>
-              );
-            } else {
-              // Regular games layout - single column for non-quiz games
-              return (
-                <div className="grid grid-cols-1 gap-6 max-w-4xl mx-auto">
-                  {pageTasks.map((task, index) => {
-                    const isCompleted = completedTasks.has(task.id);
-                    return (
-                      <div key={task.id} className={`relative ${isCompleted ? 'opacity-75' : ''}`}>
-                        {isCompleted && (
-                          <div className="absolute top-4 right-4 z-10 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
-                            ✓ Completed
-                          </div>
-                        )}
-                        <GameRenderer 
-                          task={task}
-                          onComplete={(answer) => handleTaskComplete(task.id, answer)}
-                          disabled={isCompleted}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            }
-          })()}
+          {/* Universal Sequential Games */}
+          <div className="max-w-4xl mx-auto">
+            <SequentialGamePage 
+              tasks={pageTasks}
+              onComplete={handleSequentialComplete}
+              disabled={allTasksCompleted}
+            />
+          </div>
 
           {/* Ad Space */}
           <Card className="border-dashed border-muted-foreground/30">

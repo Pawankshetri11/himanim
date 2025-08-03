@@ -130,7 +130,7 @@ const mockTasks: GameTask[] = [
       correctAnswer: 1
     }
   },
-  // Page 2
+  // Page 2 - Mixed Game Types for Sequential Play
   {
     id: '2-1',
     page: 2,
@@ -146,40 +146,44 @@ const mockTasks: GameTask[] = [
   {
     id: '2-2',
     page: 2,
-    type: 'quiz',
-    title: 'Credit Knowledge',
-    description: 'Understanding credit scores',
+    type: 'puzzle',
+    title: 'Budget Puzzle',
+    description: 'Arrange the budget items in the correct order',
     data: {
-      question: 'What is a good credit score range?',
-      options: ['300-500', '500-650', '650-750', '750-850'],
-      correctAnswer: 3
+      items: ['Emergency Fund', 'Basic Needs', 'Wants', 'Investments'],
+      correctOrder: [1, 0, 2, 3], // Basic Needs, Emergency Fund, Wants, Investments
+      instruction: 'Drag items to arrange them by financial priority'
     }
   },
   {
     id: '2-3',
     page: 2,
-    type: 'puzzle',
-    title: 'Investment Portfolio',
-    description: 'Build a balanced portfolio',
+    type: 'math',
+    title: 'Quick Math',
+    description: 'Calculate the compound interest',
     data: {
-      categories: ['Stocks', 'Bonds', 'Real Estate', 'Cash'],
-      targetPercentages: [50, 30, 15, 5],
-      instruction: 'Allocate percentages to create a balanced portfolio'
+      problem: 'If you invest $1000 at 5% annual interest compounded yearly, what will it be worth after 2 years?',
+      options: ['$1100', '$1102.50', '$1105', '$1050'],
+      correctAnswer: 1,
+      formula: 'A = P(1 + r)^t'
     }
   },
   {
     id: '2-4',
     page: 2,
-    type: 'math',
-    title: 'Savings Calculation',
-    description: 'Calculate monthly savings needed',
+    type: 'memory',
+    title: 'Financial Terms Memory',
+    description: 'Match the financial terms with their definitions',
     data: {
-      problem: 'To save $10,000 in 2 years with 3% annual interest, how much should you save monthly?',
-      options: ['$400', '$410', '$420', '$430'],
-      correctAnswer: 1
+      pairs: [
+        { term: 'APR', definition: 'Annual Percentage Rate' },
+        { term: '401k', definition: 'Retirement savings plan' },
+        { term: 'ROI', definition: 'Return on Investment' },
+        { term: 'ETF', definition: 'Exchange Traded Fund' }
+      ]
     }
   },
-  // Page 3
+  // Page 3 - Mixed Sequential Games
   {
     id: '3-1',
     page: 3,
