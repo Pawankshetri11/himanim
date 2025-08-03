@@ -186,7 +186,7 @@ export default function Quiz() {
             // Check if all tasks are quiz type for sequential display
             const allQuizTasks = pageTasks.every(task => task.type === 'quiz');
             
-            if (allQuizTasks && pageTasks.length > 1) {
+            if (allQuizTasks) {
               // Convert tasks to questions format
               const questions = pageTasks.map(task => ({
                 id: task.id,
@@ -206,9 +206,9 @@ export default function Quiz() {
                 </div>
               );
             } else {
-              // Regular games layout
+              // Regular games layout - single column for non-quiz games
               return (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 max-w-4xl mx-auto">
                   {pageTasks.map((task, index) => {
                     const isCompleted = completedTasks.has(task.id);
                     return (
