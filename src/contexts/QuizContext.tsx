@@ -66,7 +66,7 @@ const initialState: GameState = {
 
 // Mock game tasks - different types of games
 const mockTasks: GameTask[] = [
-  // Page 1 - Mix of different game types
+  // Page 1 - Sequential Quiz Questions
   {
     id: '1-1',
     page: 1,
@@ -87,41 +87,47 @@ const mockTasks: GameTask[] = [
   {
     id: '1-2',
     page: 1,
-    type: 'puzzle',
-    title: 'Budget Puzzle',
-    description: 'Arrange the budget items in the correct order',
+    type: 'quiz',
+    title: 'Investment Basics',
+    description: 'Understanding investment fundamentals',
     data: {
-      items: ['Emergency Fund', 'Basic Needs', 'Wants', 'Investments'],
-      correctOrder: [1, 0, 2, 3], // Basic Needs, Emergency Fund, Wants, Investments
-      instruction: 'Drag items to arrange them by financial priority'
+      question: 'What is diversification in investing?',
+      options: [
+        'Putting all money in one stock',
+        'Spreading investments across different assets',
+        'Only investing in bonds',
+        'Avoiding all investments'
+      ],
+      correctAnswer: 1
     }
   },
   {
     id: '1-3',
     page: 1,
-    type: 'math',
-    title: 'Quick Math',
-    description: 'Calculate the compound interest',
+    type: 'quiz',
+    title: 'Credit Score Knowledge',
+    description: 'Test your credit understanding',
     data: {
-      problem: 'If you invest $1000 at 5% annual interest compounded yearly, what will it be worth after 2 years?',
-      options: ['$1100', '$1102.50', '$1105', '$1050'],
-      correctAnswer: 1,
-      formula: 'A = P(1 + r)^t'
+      question: 'What is a good credit score range?',
+      options: ['300-500', '500-650', '650-750', '750-850'],
+      correctAnswer: 3
     }
   },
   {
     id: '1-4',
     page: 1,
-    type: 'memory',
-    title: 'Financial Terms Memory',
-    description: 'Match the financial terms with their definitions',
+    type: 'quiz',
+    title: 'Emergency Fund',
+    description: 'Understanding emergency savings',
     data: {
-      pairs: [
-        { term: 'APR', definition: 'Annual Percentage Rate' },
-        { term: '401k', definition: 'Retirement savings plan' },
-        { term: 'ROI', definition: 'Return on Investment' },
-        { term: 'ETF', definition: 'Exchange Traded Fund' }
-      ]
+      question: 'How many months of expenses should you save in an emergency fund?',
+      options: [
+        '1-2 months',
+        '3-6 months', 
+        '12 months',
+        'No need for emergency fund'
+      ],
+      correctAnswer: 1
     }
   },
   // Page 2
