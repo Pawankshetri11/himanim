@@ -120,86 +120,98 @@ export function SequentialQuestionPage({
         const selectedAnswer = answers[question.id];
 
         return (
-          <Card key={question.id} className={getCardClassName(question.id)}>
-            <CardHeader className="pb-4">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Badge 
-                      variant={questionStatus === 'completed' ? 'default' : 'secondary'} 
-                      className="text-xs"
-                    >
-                      Question {index + 1}
-                    </Badge>
-                    {getStatusIcon(question.id, index)}
-                    {isCurrentlyWaiting && (
-                      <Badge variant="outline" className="text-xs text-orange-600">
-                        Please wait 3 seconds...
-                      </Badge>
-                    )}
-                  </div>
-                  <CardTitle className={`text-lg leading-relaxed ${isLocked ? 'text-muted-foreground' : ''}`}>
-                    {question.question}
-                  </CardTitle>
-                </div>
-              </div>
-              {question.description && (
-                <p className={`text-sm mt-2 ${isLocked ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
-                  {question.description}
-                </p>
-              )}
-            </CardHeader>
-            
-            <CardContent>
-              {isLocked ? (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Lock className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                  <p className="text-sm">Please answer the previous question first</p>
-                </div>
-              ) : (
-                <RadioGroup 
-                  value={selectedAnswer?.toString() || ''} 
-                  onValueChange={(value) => handleAnswerChange(question.id, parseInt(value))}
-                  className="space-y-3"
-                  disabled={isCurrentlyWaiting || disabled || selectedAnswer !== undefined}
-                >
-                  {question.options.map((option, optionIndex) => (
-                    <div 
-                      key={optionIndex} 
-                      className={`flex items-start space-x-3 p-3 rounded-lg border transition-all duration-200 ${
-                        selectedAnswer !== undefined 
-                          ? 'border-border bg-muted/50' 
-                          : 'border-border hover:border-primary/50 hover:bg-primary/5 cursor-pointer'
-                      } ${isCurrentlyWaiting ? 'opacity-50' : ''}`}
-                      onClick={() => {
-                        if (selectedAnswer === undefined && !isCurrentlyWaiting) {
-                          handleAnswerChange(question.id, optionIndex);
-                        }
-                      }}
-                    >
-                      <RadioGroupItem 
-                        value={optionIndex.toString()} 
-                        id={`${question.id}-${optionIndex}`}
-                        className="mt-0.5"
-                        disabled={isCurrentlyWaiting || disabled || selectedAnswer !== undefined}
-                      />
-                      <Label 
-                        htmlFor={`${question.id}-${optionIndex}`}
-                        className={`flex-1 leading-relaxed ${
-                          selectedAnswer !== undefined ? 'cursor-default' : 'cursor-pointer'
-                        }`}
+          <React.Fragment key={question.id}>
+            <Card className={getCardClassName(question.id)}>
+              <CardHeader className="pb-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Badge 
+                        variant={questionStatus === 'completed' ? 'default' : 'secondary'} 
+                        className="text-xs"
                       >
-                        {option}
-                      </Label>
-                      {selectedAnswer === optionIndex && (
-                        <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" />
+                        Question {index + 1}
+                      </Badge>
+                      {getStatusIcon(question.id, index)}
+                      {isCurrentlyWaiting && (
+                        <Badge variant="outline" className="text-xs text-orange-600">
+                          Please wait 3 seconds...
+                        </Badge>
                       )}
                     </div>
-                  ))}
-                </RadioGroup>
-              )}
-            </CardContent>
-          </Card>
+                    <CardTitle className={`text-lg leading-relaxed ${isLocked ? 'text-muted-foreground' : ''}`}>
+                      {question.question}
+                    </CardTitle>
+                  </div>
+                </div>
+                {question.description && (
+                  <p className={`text-sm mt-2 ${isLocked ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
+                    {question.description}
+                  </p>
+                )}
+              </CardHeader>
+              
+              <CardContent>
+                {isLocked ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Lock className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                    <p className="text-sm">Please answer the previous question first</p>
+                  </div>
+                ) : (
+                  <RadioGroup 
+                    value={selectedAnswer?.toString() || ''} 
+                    onValueChange={(value) => handleAnswerChange(question.id, parseInt(value))}
+                    className="space-y-3"
+                    disabled={isCurrentlyWaiting || disabled || selectedAnswer !== undefined}
+                  >
+                    {question.options.map((option, optionIndex) => (
+                      <div 
+                        key={optionIndex} 
+                        className={`flex items-start space-x-3 p-3 rounded-lg border transition-all duration-200 ${
+                          selectedAnswer !== undefined 
+                            ? 'border-border bg-muted/50' 
+                            : 'border-border hover:border-primary/50 hover:bg-primary/5 cursor-pointer'
+                        } ${isCurrentlyWaiting ? 'opacity-50' : ''}`}
+                        onClick={() => {
+                          if (selectedAnswer === undefined && !isCurrentlyWaiting && !isLocked) {
+                            handleAnswerChange(question.id, optionIndex);
+                          }
+                        }}
+                      >
+                        <RadioGroupItem 
+                          value={optionIndex.toString()} 
+                          id={`${question.id}-${optionIndex}`}
+                          className="mt-0.5"
+                          disabled={isCurrentlyWaiting || disabled || selectedAnswer !== undefined || isLocked}
+                        />
+                        <Label 
+                          htmlFor={`${question.id}-${optionIndex}`}
+                          className={`flex-1 leading-relaxed ${
+                            selectedAnswer !== undefined || isLocked ? 'cursor-default' : 'cursor-pointer'
+                          }`}
+                        >
+                          {option}
+                        </Label>
+                        {selectedAnswer === optionIndex && (
+                          <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" />
+                        )}
+                      </div>
+                    ))}
+                  </RadioGroup>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Advertisement Space after each question */}
+            {index < questions.length - 1 && (
+              <Card className="border-dashed border-muted-foreground/30 my-6">
+                <CardContent className="p-6 text-center text-muted-foreground">
+                  <p className="text-sm">Advertisement Space</p>
+                  <p className="text-xs mt-1">Ads help keep our games free</p>
+                </CardContent>
+              </Card>
+            )}
+          </React.Fragment>
         );
       })}
     </div>
