@@ -142,13 +142,32 @@ export default function SkillsManagement() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="logo_url">Logo URL</Label>
-                    <Input
-                      id="logo_url"
-                      type="url"
-                      value={skillFormData.logo_url}
-                      onChange={(e) => setSkillFormData({ ...skillFormData, logo_url: e.target.value })}
-                    />
+                    <Label>Logo Image</Label>
+                    <div className="mt-2 border-2 border-dashed border-border rounded-lg p-4 text-center hover:border-primary transition-colors cursor-pointer">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        id="skillLogoUpload"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onload = () => {
+                              setSkillFormData({ ...skillFormData, logo_url: reader.result as string });
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                      />
+                      <label htmlFor="skillLogoUpload" className="cursor-pointer">
+                        {skillFormData.logo_url ? (
+                          <img src={skillFormData.logo_url} alt="Preview" className="w-16 h-16 mx-auto object-contain" />
+                        ) : (
+                          <p className="text-sm text-muted-foreground">Click to upload logo</p>
+                        )}
+                      </label>
+                    </div>
                   </div>
                   <div>
                     <Label htmlFor="order_index">Order Index</Label>

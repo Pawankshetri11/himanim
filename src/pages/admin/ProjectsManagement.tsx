@@ -128,13 +128,32 @@ export default function ProjectsManagement() {
               </div>
 
               <div>
-                <Label htmlFor="image_url">Image URL</Label>
-                <Input
-                  id="image_url"
-                  type="url"
-                  value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                />
+                <Label>Project Image</Label>
+                <div className="mt-2 border-2 border-dashed border-border rounded-lg p-4 text-center hover:border-primary transition-colors cursor-pointer">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    id="projectImageUpload"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                          setFormData({ ...formData, image_url: reader.result as string });
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                  />
+                  <label htmlFor="projectImageUpload" className="cursor-pointer">
+                    {formData.image_url ? (
+                      <img src={formData.image_url} alt="Preview" className="w-32 h-32 mx-auto object-cover rounded" />
+                    ) : (
+                      <p className="text-sm text-muted-foreground">Click to upload image</p>
+                    )}
+                  </label>
+                </div>
               </div>
 
               <div>

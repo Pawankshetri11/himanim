@@ -12,7 +12,6 @@ import HeroNavManagement from "./admin/HeroNavManagement";
 import ContactManagement from "./admin/ContactManagement";
 import ProfileManagement from "./admin/ProfileManagement";
 import ThemeManagement from "./admin/ThemeManagement";
-import TechStackManagement from "./admin/TechStackManagement";
 import ProjectCategoriesManagement from "./admin/ProjectCategoriesManagement";
 import ResumeManagement from "./admin/ResumeManagement";
 
@@ -47,7 +46,7 @@ const Admin = () => {
             {activeTab === "contact" && <ContactManagement />}
             {activeTab === "skills" && <SkillsManagement />}
             {activeTab === "skill-categories" && <SkillsManagement />}
-            {activeTab === "techstack" && <TechStackManagement />}
+            {activeTab === "techstack" && <SkillsManagement />}
             {activeTab === "experience" && <ExperienceManagement />}
             {activeTab === "projects" && <ProjectsManagement />}
             {activeTab === "project-categories" && <ProjectCategoriesManagement />}

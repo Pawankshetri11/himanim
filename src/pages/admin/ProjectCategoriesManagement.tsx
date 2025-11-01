@@ -1,42 +1,20 @@
 import { useState } from 'react';
+import { useProjectCategories } from '@/hooks/useProjectCategories';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Plus, Trash2, Edit } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useToast } from '@/hooks/use-toast';
 
 export default function ProjectCategoriesManagement() {
-  const { toast } = useToast();
+  const { categories, createCategory, updateCategory, deleteCategory } = useProjectCategories();
   const [isOpen, setIsOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
   });
-
-  const [categories, setCategories] = useState(() => {
-    const saved = localStorage.getItem('admin_project_categories');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (error) {
-        console.error('Error parsing project categories:', error);
-      }
-    }
-    return [
-      { id: '1', name: 'AI/ML', description: 'Artificial Intelligence and Machine Learning Projects' },
-      { id: '2', name: 'Web Development', description: 'Web Application Projects' },
-      { id: '3', name: 'Data Analysis', description: 'Data Analytics Projects' },
-      { id: '4', name: 'Game Development', description: 'Game Development Projects' },
-    ];
-  });
-
-  const saveCategories = (updated: any[]) => {
-    setCategories(updated);
-    localStorage.setItem('admin_project_categories', JSON.stringify(updated));
-  };
 
   const resetForm = () => {
     setFormData({ name: '', description: '' });
@@ -47,18 +25,10 @@ export default function ProjectCategoriesManagement() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (editingId) {
-      const updated = categories.map((cat: any) =>
-        cat.id === editingId ? { ...cat, ...formData } : cat
-      );
-      saveCategories(updated);
+      updateCategory({ id: editingId, ...formData });
     } else {
-      const newCat = { id: Date.now().toString(), ...formData };
-      saveCategories([...categories, newCat]);
+      createCategory(formData);
     }
-    toast({
-      title: 'Saved!',
-      description: `Category ${editingId ? 'updated' : 'added'} successfully.`,
-    });
     resetForm();
   };
 
@@ -72,12 +42,7 @@ export default function ProjectCategoriesManagement() {
   };
 
   const handleDelete = (id: string) => {
-    const updated = categories.filter((cat: any) => cat.id !== id);
-    saveCategories(updated);
-    toast({
-      title: 'Deleted',
-      description: 'Category deleted successfully.',
-    });
+    deleteCategory(id);
   };
 
   return (
