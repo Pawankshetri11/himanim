@@ -57,48 +57,60 @@ const Contact = () => {
             </div>
 
             <div className="space-y-6">
-              <a
-                href="mailto:himani.singwal@example.com"
-                className="flex items-center gap-4 p-4 bg-card rounded-lg border border-primary/20 glow-hover group"
-              >
-                <div className="p-3 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
-                  <Mail className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <p className="font-semibold">Email</p>
-                  <p className="text-sm text-muted-foreground">himani.singwal@example.com</p>
-                </div>
-              </a>
+              {(() => {
+                const contactInfo = localStorage.getItem('admin_contact_info');
+                const contact = contactInfo ? JSON.parse(contactInfo) : {
+                  email: 'himani.singwal@example.com',
+                  linkedin: 'https://linkedin.com/in/himani-singwal',
+                  github: 'https://github.com/himanisingwal'
+                };
+                return (
+                  <>
+                    <a
+                      href={`mailto:${contact.email}`}
+                      className="flex items-center gap-4 p-4 bg-card rounded-lg border border-primary/20 glow-hover group"
+                    >
+                      <div className="p-3 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                        <Mail className="h-6 w-6 text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">Email</p>
+                        <p className="text-sm text-muted-foreground">{contact.email}</p>
+                      </div>
+                    </a>
 
-              <a
-                href="https://linkedin.com/in/himani-singwal"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-4 p-4 bg-card rounded-lg border border-primary/20 glow-hover group"
-              >
-                <div className="p-3 bg-secondary/10 rounded-lg group-hover:bg-secondary/20 transition-colors">
-                  <Linkedin className="h-6 w-6 text-secondary" />
-                </div>
-                <div>
-                  <p className="font-semibold">LinkedIn</p>
-                  <p className="text-sm text-muted-foreground">Connect with me</p>
-                </div>
-              </a>
+                    <a
+                      href={contact.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-4 p-4 bg-card rounded-lg border border-primary/20 glow-hover group"
+                    >
+                      <div className="p-3 bg-secondary/10 rounded-lg group-hover:bg-secondary/20 transition-colors">
+                        <Linkedin className="h-6 w-6 text-secondary" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">LinkedIn</p>
+                        <p className="text-sm text-muted-foreground">Connect with me</p>
+                      </div>
+                    </a>
 
-              <a
-                href="https://github.com/himanisingwal"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-4 p-4 bg-card rounded-lg border border-primary/20 glow-hover group"
-              >
-                <div className="p-3 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
-                  <Github className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <p className="font-semibold">GitHub</p>
-                  <p className="text-sm text-muted-foreground">Check out my code</p>
-                </div>
-              </a>
+                    <a
+                      href={contact.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-4 p-4 bg-card rounded-lg border border-primary/20 glow-hover group"
+                    >
+                      <div className="p-3 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                        <Github className="h-6 w-6 text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">GitHub</p>
+                        <p className="text-sm text-muted-foreground">Check out my code</p>
+                      </div>
+                    </a>
+                  </>
+                );
+              })()}
             </div>
           </div>
 

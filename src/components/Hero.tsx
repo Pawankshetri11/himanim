@@ -61,31 +61,43 @@ const Hero = () => {
 
           {/* Social Media Icons */}
           <div className="flex gap-4 pt-4">
-            <a
-              href="mailto:himani.singwal@example.com"
-              className="p-3 bg-surface rounded-lg hover:bg-primary/10 transition-colors group border border-primary/20"
-              aria-label="Email"
-            >
-              <Mail className="h-5 w-5 text-foreground/70 group-hover:text-primary transition-colors" />
-            </a>
-            <a
-              href="https://linkedin.com/in/himani-singwal"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 bg-surface rounded-lg hover:bg-secondary/10 transition-colors group border border-secondary/20"
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="h-5 w-5 text-foreground/70 group-hover:text-secondary transition-colors" />
-            </a>
-            <a
-              href="https://github.com/himanisingwal"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 bg-surface rounded-lg hover:bg-primary/10 transition-colors group border border-primary/20"
-              aria-label="GitHub"
-            >
-              <Github className="h-5 w-5 text-foreground/70 group-hover:text-primary transition-colors" />
-            </a>
+            {(() => {
+              const contactInfo = localStorage.getItem('admin_contact_info');
+              const contact = contactInfo ? JSON.parse(contactInfo) : {
+                email: 'himani.singwal@example.com',
+                linkedin: 'https://linkedin.com/in/himani-singwal',
+                github: 'https://github.com/himanisingwal'
+              };
+              return (
+                <>
+                  <a
+                    href={`mailto:${contact.email}`}
+                    className="p-3 bg-surface rounded-lg hover:bg-primary/10 transition-colors group border border-primary/20"
+                    aria-label="Email"
+                  >
+                    <Mail className="h-5 w-5 text-foreground/70 group-hover:text-primary transition-colors" />
+                  </a>
+                  <a
+                    href={contact.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 bg-surface rounded-lg hover:bg-secondary/10 transition-colors group border border-secondary/20"
+                    aria-label="LinkedIn"
+                  >
+                    <Linkedin className="h-5 w-5 text-foreground/70 group-hover:text-secondary transition-colors" />
+                  </a>
+                  <a
+                    href={contact.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 bg-surface rounded-lg hover:bg-primary/10 transition-colors group border border-primary/20"
+                    aria-label="GitHub"
+                  >
+                    <Github className="h-5 w-5 text-foreground/70 group-hover:text-primary transition-colors" />
+                  </a>
+                </>
+              );
+            })()}
           </div>
 
           <div className="flex flex-wrap gap-4 pt-2">

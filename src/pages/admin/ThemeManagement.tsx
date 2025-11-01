@@ -8,202 +8,116 @@ import { useToast } from '@/hooks/use-toast';
 
 export default function ThemeManagement() {
   const { toast } = useToast();
-  const [colors, setColors] = useState(() => {
-    const saved = localStorage.getItem('admin_theme_colors');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (error) {
-        console.error('Error parsing theme colors:', error);
-      }
-    }
-    return {
-      primary: '#8B5CF6',
-      secondary: '#EC4899',
-      background: '#0A0A0A',
-      surface: '#1A1A1A',
-      text: '#FFFFFF',
-    };
-  });
+  const [selectedColor, setSelectedColor] = useState('280 65% 60%');
+  const [customHSL, setCustomHSL] = useState('280 65% 60%');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    localStorage.setItem('admin_theme_colors', JSON.stringify(colors));
-    
-    // Apply colors to CSS variables
+  const presetColors = [
+    { name: 'Purple', hsl: '280 65% 60%', bgClass: 'bg-purple-500' },
+    { name: 'Blue', hsl: '217 91% 60%', bgClass: 'bg-blue-500' },
+    { name: 'Green', hsl: '142 71% 45%', bgClass: 'bg-green-600' },
+    { name: 'Orange', hsl: '25 95% 53%', bgClass: 'bg-orange-500' },
+    { name: 'Pink', hsl: '330 81% 60%', bgClass: 'bg-pink-500' },
+    { name: 'Red', hsl: '0 84% 60%', bgClass: 'bg-red-500' },
+  ];
+
+  const applyTheme = (hsl: string) => {
+    localStorage.setItem('admin_theme_primary', hsl);
     const root = document.documentElement;
-    root.style.setProperty('--color-primary', colors.primary);
-    root.style.setProperty('--color-secondary', colors.secondary);
-    root.style.setProperty('--color-background', colors.background);
-    root.style.setProperty('--color-surface', colors.surface);
-    root.style.setProperty('--color-text', colors.text);
-    
+    root.style.setProperty('--primary', hsl);
     toast({
-      title: 'Saved!',
-      description: 'Theme colors updated. Refresh the page to see changes.',
+      title: 'Theme Updated!',
+      description: 'Primary color has been changed.',
     });
   };
 
-  const resetDefaults = () => {
-    const defaults = {
-      primary: '#8B5CF6',
-      secondary: '#EC4899',
-      background: '#0A0A0A',
-      surface: '#1A1A1A',
-      text: '#FFFFFF',
-    };
-    setColors(defaults);
-    localStorage.setItem('admin_theme_colors', JSON.stringify(defaults));
-    toast({
-      title: 'Reset!',
-      description: 'Theme colors reset to defaults.',
-    });
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    applyTheme(selectedColor);
+  };
+
+  const handleCustomSubmit = () => {
+    if (customHSL.trim()) {
+      applyTheme(customHSL);
+      setSelectedColor(customHSL);
+    }
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Theme Color Settings</h2>
-        <Button variant="outline" onClick={resetDefaults}>
-          <RefreshCw className="h-4 w-4 mr-2" />
-          Reset to Defaults
-        </Button>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Color Palette</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="primary">Primary Color</Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="primary"
-                    type="color"
-                    value={colors.primary}
-                    onChange={(e) => setColors({ ...colors, primary: e.target.value })}
-                    className="w-20 h-10"
-                  />
-                  <Input
-                    type="text"
-                    value={colors.primary}
-                    onChange={(e) => setColors({ ...colors, primary: e.target.value })}
-                    className="flex-1"
-                  />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="secondary">Secondary Color</Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="secondary"
-                    type="color"
-                    value={colors.secondary}
-                    onChange={(e) => setColors({ ...colors, secondary: e.target.value })}
-                    className="w-20 h-10"
-                  />
-                  <Input
-                    type="text"
-                    value={colors.secondary}
-                    onChange={(e) => setColors({ ...colors, secondary: e.target.value })}
-                    className="flex-1"
-                  />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="background">Background Color</Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="background"
-                    type="color"
-                    value={colors.background}
-                    onChange={(e) => setColors({ ...colors, background: e.target.value })}
-                    className="w-20 h-10"
-                  />
-                  <Input
-                    type="text"
-                    value={colors.background}
-                    onChange={(e) => setColors({ ...colors, background: e.target.value })}
-                    className="flex-1"
-                  />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="surface">Surface Color</Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="surface"
-                    type="color"
-                    value={colors.surface}
-                    onChange={(e) => setColors({ ...colors, surface: e.target.value })}
-                    className="w-20 h-10"
-                  />
-                  <Input
-                    type="text"
-                    value={colors.surface}
-                    onChange={(e) => setColors({ ...colors, surface: e.target.value })}
-                    className="flex-1"
-                  />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="text">Text Color</Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="text"
-                    type="color"
-                    value={colors.text}
-                    onChange={(e) => setColors({ ...colors, text: e.target.value })}
-                    className="w-20 h-10"
-                  />
-                  <Input
-                    type="text"
-                    value={colors.text}
-                    onChange={(e) => setColors({ ...colors, text: e.target.value })}
-                    className="flex-1"
-                  />
-                </div>
-              </div>
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+            </svg>
+            Portfolio Color Theme
+          </CardTitle>
+          <p className="text-sm text-muted-foreground">Customize the primary color of your portfolio</p>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+              {presetColors.map((color) => (
+                <button
+                  key={color.name}
+                  type="button"
+                  onClick={() => setSelectedColor(color.hsl)}
+                  className={`p-6 rounded-lg border-2 transition-all hover:scale-105 ${
+                    selectedColor === color.hsl ? 'border-primary ring-2 ring-primary' : 'border-border'
+                  }`}
+                  style={{ backgroundColor: `hsl(${color.hsl})` }}
+                >
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <div className={`w-12 h-12 rounded-full ${color.bgClass}`}></div>
+                    <span className="text-sm font-medium text-card-foreground mt-2">{color.name}</span>
+                  </div>
+                </button>
+              ))}
             </div>
-          </CardContent>
-        </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Preview</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4 p-4" style={{ backgroundColor: colors.background }}>
-              <div className="p-4 rounded-lg" style={{ backgroundColor: colors.surface }}>
-                <h3 style={{ color: colors.text }}>Sample Heading</h3>
-                <p style={{ color: colors.text, opacity: 0.7 }}>This is how your text will look</p>
-                <div className="flex gap-2 mt-4">
-                  <button 
-                    className="px-4 py-2 rounded"
-                    style={{ backgroundColor: colors.primary, color: '#fff' }}
-                  >
-                    Primary Button
-                  </button>
-                  <button 
-                    className="px-4 py-2 rounded"
-                    style={{ backgroundColor: colors.secondary, color: '#fff' }}
-                  >
-                    Secondary Button
-                  </button>
+            <div className="mt-6 space-y-4">
+              <div>
+                <Label htmlFor="customHSL">Custom HSL Color</Label>
+                <div className="flex gap-2 mt-2">
+                  <Input
+                    id="customHSL"
+                    value={customHSL}
+                    onChange={(e) => setCustomHSL(e.target.value)}
+                    placeholder='Enter HSL values (e.g., "280 65% 60%")'
+                    className="flex-1"
+                  />
+                  <Button type="button" onClick={handleCustomSubmit}>
+                    Apply
+                  </Button>
                 </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        <Button type="submit" className="w-full">
-          <Save className="h-4 w-4 mr-2" />
-          Save Theme
-        </Button>
-      </form>
+              <Card className="border-2 border-dashed border-primary/20">
+                <CardHeader>
+                  <CardTitle className="text-base">Preview</CardTitle>
+                  <p className="text-sm text-muted-foreground">This is how your primary color will look across the portfolio</p>
+                </CardHeader>
+                <CardContent>
+                  <Button 
+                    type="button"
+                    style={{ 
+                      backgroundColor: `hsl(${selectedColor})`,
+                      color: 'white'
+                    }}
+                  >
+                    Sample Button
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Button type="submit" className="w-full mt-6">
+              <Save className="h-4 w-4 mr-2" />
+              Save Theme
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }
